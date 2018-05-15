@@ -1,0 +1,155 @@
+#include "bdatabase.h"
+Bdatabase::Bdatabase()
+{
+      book b;
+      top=-1;
+      fstream file("D://library//book.txt", ios::in);    //打开文件
+      while (1)
+      {
+       file.read((char *)&b, sizeof(b));
+       if (!file) break;
+       top++;
+       btarray[top] = b;
+      }
+      file.close();     //关闭文件
+}
+
+Bdatabase::~Bdatabase()
+{
+    ofstream file("D://library//book.txt");
+      for (int i = 0; i <top; i++)
+      {
+        if(i==delebook) break;
+        file.write((char *)&btarray[i], sizeof(btarray[i]));
+      }
+      file.close();
+}
+
+void Bdatabase::filein(string nam)
+{
+    char dat[100000];
+    ofstream afile("D://library//nam.txt");
+
+    cout<<"please input the content:"<<endl;
+    getchar();
+    cin.getline(dat,10000);
+    afile<<dat<<endl;
+}
+
+void Bdatabase::addbooks()
+{
+    int nu;
+    char a;
+    string b_name;
+    string writer;
+    string isbn;
+    bool re;
+    string position;
+    {
+        cout<<"the boook*s name:"<<endl;
+        cin>>b_name;
+
+        cout<<"the boook*s writer:"<<endl;
+        cin>>writer;
+        cout<<"isbn:"<<endl;
+        cin>>isbn;
+        cout<<"the boook*s number:"<<endl;
+        cin>>nu;
+        cout<<"is it a real book?"<<endl;
+        cout<<"Y or N"<<endl;
+        cin>>a;
+        if(a=='Y')
+        {
+            cout<<"please input it's location in library"<<endl;
+            cin>>position;
+            top++;
+            btarray[top].addbook(b_name,writer,isbn,1,position,nu);
+            return;
+        }
+        else
+        {
+           filein(b_name);
+           position="D://library//b_name.txt";
+           top++;
+           btarray[top].addbook(b_name,writer,isbn,1,position,nu);
+        }
+    }
+}
+book* Bdatabase::findbooks(string a)
+{
+    for(int i=0;i<top;i++)
+    {
+        if(btarray[i].getname()==a)
+        {
+            cout<<"found："<<endl;
+            btarray[i].showwing();
+            return &(btarray[i]);
+        }
+    }
+    cout<<"sorry ,we dont have the book！"<<endl;
+    return NULL;
+}
+void Bdatabase::deletebooks(string nam)
+{
+    for(int i=0;i<top;i++)
+    {
+        if(btarray[i].getname()==nam)
+        delebook=i;
+        return;
+    }
+}
+
+void Bdatabase::showing()
+{
+    for(int i=0;i<top;i++)
+    {
+         btarray[top].showwing();
+    }
+}
+
+/*
+void Bdatabase::addpapers()
+{
+    char p_name[50];
+    int num;            //图书编号
+    char publisher[30];
+    char writer[50];   // 多个作者？
+    char time[10];     //发布时间
+    char position[20];
+
+
+
+    char a;
+    char p_nam[50];
+    char write[50];
+    char  publish[20];
+    char tim[10];
+    char position[50];
+    {
+        cout<<"杂志名："<<endl;
+        cin>>p_nam;
+        cout<<"作者："<<endl;
+        cin>>write;
+        cout<<"isbn:"<<endl;
+        cin>>isbn;
+        cout<<"是否是实体书？ Y or N"<<endl;
+        cin>>a;
+        if(a=='Y')
+        {
+            b.re=1;
+            cout<<"请输入文本放置位置"<<endl;
+            cin>>position;
+        }
+        else
+        {
+            filein(b_name);
+            position="c://library//b_name.txt";
+            b.addbook(b_name,writer,isbn,re);
+        }
+        b.addbook(b_name,writer,isbn,)
+        top++;
+        btarray[top] = b;
+        return;
+    }
+}
+*/
